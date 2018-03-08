@@ -1,6 +1,8 @@
 package com.reflectorama.game;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,13 +27,13 @@ public class MenuInicio extends Activity {
 
     private SharedPreferences myPreferences;
     private SharedPreferences.Editor myEditor;
-
+    private int contador;
 
 
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
-
+        contador=0;
         Intent intent2 = new Intent(this, AudioServiceJuego.class);
         stopService(intent2);
 
@@ -39,16 +41,6 @@ public class MenuInicio extends Activity {
                 = PreferenceManager.getDefaultSharedPreferences(this);
 
         myEditor= myPreferences.edit();
-/*
-        boolean existe= myPreferences.getBoolean("baseDatos", false);
-        if (!myPreferences.getBoolean("baseDatos", false)){
-            BaseDatosAndroidReflectorama baseDatos=new BaseDatosAndroidReflectorama(this);
-            baseDatos.crear();
-            myEditor.putBoolean("baseDatos", true);
-            myEditor.commit();
-        }
-        boolean existe2= myPreferences.getBoolean("baseDatos", false);
-        */
 
         if (myPreferences.getBoolean("musica", true)) {
             Intent intent = new Intent(this, AudioService.class);
@@ -56,9 +48,10 @@ public class MenuInicio extends Activity {
             startService(intent);
 
 
-        } else {
-
         }
+
+        myEditor.putBoolean("debugMode", false);
+        myEditor.commit();
         setContentView(R.layout.menuinicio);
 
 
@@ -70,6 +63,39 @@ public class MenuInicio extends Activity {
 
         startActivity(i);
 
+    }
+
+    //=====================================================//
+    //         ALERT DIALOG DE LOS REQUISITOS              //
+    //=====================================================//
+    /**
+     * Al pulsar 5 veces en mordisquitos se activara el debug mode para la siguiente pantalla
+     * empieza con los 4 escudos activos y se activan la vista de los poligonos.
+     * @param v
+     */
+    public void debugMode(View v){
+       contador++;
+       if (contador==5){
+           myEditor = myPreferences.edit();
+           myEditor.putBoolean("debugMode", true);
+           myEditor.commit();
+           AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+           builder.setMessage("Modo debug activado");
+            builder.setNeutralButton(
+                    "OK",
+                    new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    }
+            );
+           AlertDialog alertDialog = builder.create();
+
+           alertDialog.show();
+       }
     }
 
     public void puntuaciones(View v) {
@@ -93,6 +119,8 @@ public class MenuInicio extends Activity {
             intent.putExtra("action", AudioService.START);
             startService(intent);
         }
+        myEditor.putBoolean("debugMode", false);
+        myEditor.commit();
     }
 
     @Override

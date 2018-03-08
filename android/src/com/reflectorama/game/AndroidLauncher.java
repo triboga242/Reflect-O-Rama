@@ -18,52 +18,56 @@ import Utiles.MyGameCallback;
 public class AndroidLauncher extends AndroidApplication implements MyGameCallback {
 
     private MyGdxGame myGdxGame;
-	private SharedPreferences myPreferences;
+    private SharedPreferences myPreferences;
 
 
     @Override
-	protected void onCreate (Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
 
-		super.onCreate(savedInstanceState);
-		BaseDatosAndroidReflectorama baseDatos = new BaseDatosAndroidReflectorama(this);
+        super.onCreate(savedInstanceState);
+        BaseDatosAndroidReflectorama baseDatos = new BaseDatosAndroidReflectorama(this);
         myPreferences
                 = PreferenceManager.getDefaultSharedPreferences(this);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-        this.myGdxGame=new MyGdxGame(this, baseDatos);
-		initialize(myGdxGame, config);
-	}
+        this.myGdxGame = new MyGdxGame(this, baseDatos);
+        initialize(myGdxGame, config);
+    }
 
-	@Override
-	public void startActivity() {
+    @Override
+    public void startActivity() {
         Intent i = new Intent(this, MenuInicio.class);
-        startActivity(i);	}
+        startActivity(i);
+    }
 
-	@Override
-	public void musicaOn() {
-		if (myPreferences.getBoolean("musica", true)) {
-			Intent intentmus = new Intent(this, AudioServiceJuego.class);
-			intentmus.putExtra("action", AudioServiceJuego.START);
-			startService(intentmus);
-		}
-	}
+    @Override
+    public void musicaOn() {
+        if (myPreferences.getBoolean("musica", true)) {
+            Intent intentmus = new Intent(this, AudioServiceJuego.class);
+            intentmus.putExtra("action", AudioServiceJuego.START);
+            startService(intentmus);
+        }
+    }
 
     @Override
     public void musicaOff() {
-		if (myPreferences.getBoolean("musica", true)) {
-			Intent intentmus = new Intent(this, AudioServiceJuego.class);
-			intentmus.putExtra("action", AudioServiceJuego.PAUSE);
-			startService(intentmus);
-		}
+        if (myPreferences.getBoolean("musica", true)) {
+            Intent intentmus = new Intent(this, AudioServiceJuego.class);
+            intentmus.putExtra("action", AudioServiceJuego.PAUSE);
+            startService(intentmus);
+        }
     }
 
-	@Override
-	public boolean getCrazyMode() {
-		if (myPreferences.getBoolean("crazy_mode", true)) {
-			return true;
-		}
+    @Override
+    public boolean getCrazyMode() {
+        if (myPreferences.getBoolean("crazy_mode", true)) {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-
+    @Override
+    public boolean getDebugmode() {
+        return (myPreferences.getBoolean("debugMode", false));
+    }
 }

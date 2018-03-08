@@ -6,7 +6,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g3d.particles.values.MeshSpawnShapeValue;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -67,11 +70,11 @@ public class NaveEspacio extends PantallaBase {
     private float altoPantalla;
     private float anchoPantalla;
 
+    private boolean debugmode;
 
+    private static final int BENDERS_FINITOS=1000;
+    private int contadorBenders;
     private MyGdxGame game;
-//======================================//
-    private boolean debugmode = false;
-//======================================//
 
     public NaveEspacio() {
     }
@@ -83,6 +86,9 @@ public class NaveEspacio extends PantallaBase {
         game = g;
 
         numeroBenders=25;
+        contadorBenders=0;
+
+        debugmode=game.myGameCallback.getDebugmode();
 
         altoPantalla = Gdx.graphics.getHeight();
         anchoPantalla = Gdx.graphics.getWidth();
@@ -105,7 +111,7 @@ public class NaveEspacio extends PantallaBase {
         actores = new Group();
         actores.addActor(nave = new ActorNave(naveTextura));
 
-        crearBenders(50);
+        crearBenders(numeroBenders);
 
         actores.addActor(e1 = new ActorEscudo(1));
         actores.addActor(e2 = new ActorEscudo(2));
@@ -113,6 +119,7 @@ public class NaveEspacio extends PantallaBase {
         actores.addActor(e4 = new ActorEscudo(4));
 
         if (!debugmode) {
+
             e1.setVisible(false);
             e2.setVisible(false);
             e3.setVisible(false);
@@ -156,50 +163,52 @@ public class NaveEspacio extends PantallaBase {
             e2.getTriangle();
             e3.getTriangle();
             e4.getTriangle();
+
+            nave.getHitBoxShape();
+
             for (ActorBender b : ControladorBenderes.benders) {
 
                 b.getRectangle();
                 b.getHitBox();
-                Polygon p = e3.getLine();
-
-
             }
-
         }
         ArrayList<ActorBender> bendersMuertos = new ArrayList<ActorBender>();
+
+
+
 
         for (ActorBender b : ControladorBenderes.benders) {
 
             //A veces hay colisiona con dos escudos a la vez, podria solucionarlo poniendo un boleano que controle que solo cuente una
             //colision, pero lo dejo para que sea un tipo de "bonus".
 
-            if (isCollision(e1.getLine(),
-                    b.getRectangle()) && e1.isVisible()) {
+            if (isCollision(e1, b) && e1.isVisible()) {
                 bendersMuertos.add(b);
                 puntuacion++;
+                b.clear();
                 b.remove();
                 Gdx.app.log("Escudo1 colisiona", "BUUUUUUUUUM");
             }
 
-            if (isCollision(e2.getLine(),
-                    b.getRectangle()) && e2.isVisible()) {
+            if (isCollision(e2, b) && e2.isVisible()) {
                 bendersMuertos.add(b);
                 puntuacion++;
+                b.clear();
                 b.remove();
                 Gdx.app.log("Escudo2 colisiona", "BUUUUUUUUUM");
             }
-            if (isCollision(e3.getLine(),
-                    b.getRectangle()) && e3.isVisible()) {
+            if (isCollision(e3, b) && e3.isVisible()) {
                 bendersMuertos.add(b);
                 puntuacion++;
+                b.clear();
                 b.remove();
                 Gdx.app.log("Escudo3 colisiona", "BUUUUUUUUUM");
             }
-            if (isCollision(e4.getLine(),
-                    b.getRectangle()) && e4.isVisible()) {
+            if (isCollision(e4, b) && e4.isVisible()) {
                 bendersMuertos.add(b);
                 puntuacion++;
                 b.remove();
+                b.clear();
                 Gdx.app.log("Escudo4 colisiona", "BUUUUUUUUUM");
             }
 
@@ -238,12 +247,14 @@ public class NaveEspacio extends PantallaBase {
         ControladorBenderes.benders.removeAll(bendersMuertos);
 
         if (game.myGameCallback.getCrazyMode()) {
-            if (ControladorBenderes.benders.size() <= 25) {
-                crearBenders(25);
+            if (ControladorBenderes.benders.size() <= 10) {
+                crearBenders(numeroBenders);
+            }
+        }else {
+            if (contadorBenders<BENDERS_FINITOS){
+                crearBenders(numeroBenders);
             }
         }
-
-
         escena.draw();
     }
 
@@ -258,15 +269,15 @@ public class NaveEspacio extends PantallaBase {
             ActorBender b = new ActorBender(benderTextura, randomGenerator.nextInt(9) + 3, aux + 1, game);
             actores.addActor(b);
             controlBender.aniadirBender(b);
+            contadorBenders++;
         }
 
     }
 
-    private boolean isCollision(Polygon p, Rectangle r) {
-        Polygon rPoly = new Polygon(new float[]{0, 0, r.width, 0, r.width,
-                r.height, 0, r.height});
-        rPoly.setPosition(r.x, r.y);
-        if (Intersector.overlapConvexPolygons(rPoly, p))
+    private boolean isCollision(ActorEscudo escudo, ActorBender bender) {
+
+        if (Intersector.overlapConvexPolygons(escudo.getLine(), bender.getPligon()))
+
             return true;
         return false;
     }

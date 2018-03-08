@@ -119,81 +119,29 @@ public class ActorEscudo extends Actor {
         return sprite;
     }
 
-    public MeshSpawnShapeValue.Triangle getTriangle() {
+    public Polygon getTriangle() {
 
         Matrix4 normalProjection = new Matrix4().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         ShapeRenderer spriteDebugger;
         spriteDebugger = new ShapeRenderer();
 
-        MeshSpawnShapeValue.Triangle t = new MeshSpawnShapeValue.Triangle(getX(), getY(), 0,
-                getX() + getHeight(), getX() + getHeight(), 0,
-                getY() + getWidth(), getY() + getWidth(), 0);
-
         spriteDebugger.setProjectionMatrix(normalProjection);
-        spriteDebugger.setColor(Color.GREEN);
-
-
         spriteDebugger.begin(ShapeRenderer.ShapeType.Line);
-        if (modo == 1) {
-
-
-        }
-        if (modo == 2) {
-            spriteDebugger.curve(getX() + getWidth(), getY(),
-                    getX() + getWidth() * 0.6f, getY() + getHeight() * 0.6f,
-                    getX() + getWidth() * 0.8f, getY() + getHeight() * 0.8f,
-                    getX(), getY() + getHeight(), 10
-            );
-        }
-        if (modo == 3) {
-            spriteDebugger.curve(getX(), getY(),
-                    getX() + getWidth() / 2, getY() + getHeight() / 4,
-                    getX() + getWidth() / 2, getY() + getHeight() / 4,
-                    getX() + getWidth(), getY() + getHeight(), 10
-            );
-
-
-        }
-        if (modo == 4) {
-            spriteDebugger.curve(getX(), getY() + getHeight(),
-                    getX() + getWidth() / 2, getY() + getHeight() / 10,
-                    getX() + getWidth() / 2, getY() + getHeight() / 10,
-                    getX() + getWidth(), getY(), 10
-            );
-        }
-
-        /*
-        switch (modo) {
-            case 1:
-                ShapeRenderer spriteDebugger2;
-                spriteDebugger2 = new ShapeRenderer();
-                t = new MeshSpawnShapeValue.Triangle(getX(), getY(), 0,
-                        getX() + getHeight(), getX() + getHeight(), 0,
-                        getY() + getWidth(), getY() + getWidth(), 0);
-                spriteDebugger2.setProjectionMatrix(normalProjection);
-
-                spriteDebugger2.begin(ShapeRenderer.ShapeType.Filled);
-                spriteDebugger2.setColor(Color.PURPLE);
-
-                spriteDebugger2.triangle(getX(), getY(),
-                        getX() + getWidth(), getY() + getHeight(),
-                        getX() + getWidth(), getY());
-                spriteDebugger2.end();
-
-                return t;
-
-        }
-        */
+        spriteDebugger.polygon(getLine().getVertices());
+        spriteDebugger.setColor(Color.PURPLE);
         spriteDebugger.end();
-        return t;
+
+        spriteDebugger.end();
+        return getLine();
     }
 
     public Polygon getLine() {
         float[] vertices;
         if (modo == 1) {
 
-            vertices = new float[]{getX(),
+            vertices = new float[]{
+                    getX(),
                     getY(),
                     getX() + getHeight() / 4,
                     getY() + getWidth() / 4,
@@ -204,31 +152,22 @@ public class ActorEscudo extends Actor {
         } else if (modo == 2) {
 
             vertices = new float[]{
-                    getX() + getWidth(),
-                    getY(),
-                    getX() + getWidth() * 0.6f,
-                    getY() + getHeight() * 0.6f,
-                    getX() + getWidth() * 0.8f,
-                    getY() + getHeight() * 0.8f,
-                    getX(),
-                    getY() + getHeight()
+                    getX() + getWidth()- getWidth()/4 , getY() + getHeight() - getHeight()/4,
+                    getX() + getWidth(), getY(),
+                    getX() , getY() + getHeight(),
+
             };
 
         } else if (modo == 3) {
             vertices = new float[]{
                     getX(), getY(),
-                    getX() + getWidth() / 2, getY() + getHeight() / 4,
-                    getX() + getWidth() / 2, getY() + getHeight() / 4,
+                    getX() + getWidth() *0.8f, getY() + getHeight() *0.2f,
                     getX() + getWidth(), getY() + getHeight()
             };
         } else {
             vertices = new float[]{
-                    getX(),
-                    getY() + getHeight(),
-                    getX() + getWidth() / 4,
-                    getY() + getHeight() / 4,
-                    getX() + getWidth() / 2,
-                    getY() + getHeight() / 2,
+                    getX(), getY() + getHeight(),
+                    getX() + getWidth()*0.2f, getY() + getHeight()*0.2f,
                     getX() + getWidth(), getY()
             };
         }

@@ -1,6 +1,7 @@
 package com.reflectorama.game;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -51,6 +52,7 @@ public class Opciones extends Activity implements View.OnClickListener {
         if (myPreferences.getBoolean("crazy_mode", true)) {
             tb2.setText("ON");
             cont2=1;
+
         }else {
             tb2.setText("OFF");
             cont2 = 0;

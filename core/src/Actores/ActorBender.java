@@ -140,6 +140,7 @@ public class ActorBender extends Actor {
 
         this.addAction(new SequenceAction(mv1, new ParallelAction(mv2, ra)));
 
+
     }
 
     @Override
@@ -188,6 +189,13 @@ public class ActorBender extends Actor {
 
         return polygon;
 
+    }
+
+    public Polygon getPligon(){
+        return polygon = new Polygon(new float[]{getX(),getY(),
+                getX()+getWidth(),getY(),
+                getX()+getWidth(), getY()+getHeight(),
+                getX(),getY()+getHeight()});
     }
 
     public Rectangle getRectangle(){return sprite.getBoundingRectangle();}

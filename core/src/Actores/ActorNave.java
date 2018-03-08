@@ -1,9 +1,14 @@
 package Actores;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
@@ -35,6 +40,37 @@ public class ActorNave extends Actor {
         colliding=false;
     }
 
+    public Polygon getHitBoxShape() {
+
+        Matrix4 normalProjection = new Matrix4().setToOrtho2D(0, 0, Gdx.graphics.getWidth(),  Gdx.graphics.getHeight());
+
+        Polygon polygon = getPolygon();
+        polygon.setOrigin((getX()+getWidth())/2, (getY()+getHeight())/2);
+
+
+       ShapeRenderer spriteDebugger=new ShapeRenderer();
+        spriteDebugger.setProjectionMatrix(normalProjection);
+        spriteDebugger.begin(ShapeRenderer.ShapeType.Line);
+        spriteDebugger.setColor(Color.GREEN);
+        spriteDebugger.polygon(polygon.getTransformedVertices());
+
+        spriteDebugger.end();
+
+        return polygon;
+
+    }
+
+    public Polygon getPolygon(){
+        Polygon polygon = new Polygon(new float[]{
+                getX()+getWidth()/10,getY()+getHeight()/10,
+                getX()+getWidth()-getWidth()/10,getY()+getHeight()/10,
+                getX()+getWidth()-getWidth()/10, getY()+getHeight()-getHeight()/10,
+                getX()+getWidth()/10,getY()+getHeight()-getHeight()/10
+        });
+        polygon.setOrigin((getX()+getWidth())/2, (getY()+getHeight())/2);
+        return polygon;
+    }
+
     public Rectangle getHitBox() {
         return sprite.getBoundingRectangle();
     }
@@ -55,25 +91,7 @@ public class ActorNave extends Actor {
 
     public boolean colisiona (ActorBender bender){
 
-        boolean overlaps=getHitBox().overlaps(bender.getRectangle());
-        contador++;
-
-        if (overlaps){
-            return true;
-        }
-        return false;
-        /*
-        if(overlaps&&colliding==false){
-            colliding=true; //In the InputProcessor, we only listen to keydown (thus we move) only if not colliding.
-            //we only do the collision act if it's the first time we detect collision, that's why we don't return colliding as the last command.
-            return true;
-        }else if(!overlaps){
-            colliding=false;
-            return false;
-        }
-
-        return false;
-        */
+        return Intersector.overlapConvexPolygons(getPolygon(), bender.getPligon());
     }
 
 
