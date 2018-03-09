@@ -74,6 +74,7 @@ public class NaveEspacio extends PantallaBase {
 
     private static final int BENDERS_FINITOS=1000;
     private int contadorBenders;
+    private long aux;
     private MyGdxGame game;
 
     public NaveEspacio() {
@@ -251,7 +252,8 @@ public class NaveEspacio extends PantallaBase {
                 crearBenders(numeroBenders);
             }
         }else {
-            if (contadorBenders<BENDERS_FINITOS){
+
+            if (contadorBenders<BENDERS_FINITOS && ControladorBenderes.benders.size() <= 10){
                 crearBenders(numeroBenders);
             }
         }
@@ -262,7 +264,7 @@ public class NaveEspacio extends PantallaBase {
     private void crearBenders(int cantidad){
         randomGenerator = new Random();
 
-        long aux = 0;
+        aux = 0;
         for (int i = 0; i < cantidad; i++) {
 
             aux += (long) new Random().nextInt(4);
