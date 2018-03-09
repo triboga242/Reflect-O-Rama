@@ -242,6 +242,7 @@ public class NaveEspacio extends PantallaBase {
                     ra.setAmount(30);
                     ra.setDuration(1);
                     nave.addAction(ra);
+
                 }
             }
         }
