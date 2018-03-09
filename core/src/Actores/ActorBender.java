@@ -140,7 +140,6 @@ public class ActorBender extends Actor {
 
         this.addAction(new SequenceAction(mv1, new ParallelAction(mv2, ra)));
 
-
     }
 
     @Override

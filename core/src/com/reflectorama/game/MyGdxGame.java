@@ -3,6 +3,7 @@ package com.reflectorama.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 
+import Pantallas.GameOver;
 import Pantallas.NaveEspacio;
 import Utiles.BaseDatosReflect;
 import Utiles.MyGameCallback;
@@ -15,16 +16,18 @@ public class MyGdxGame extends Game {
 
     public MyGameCallback myGameCallback;
 
+    public GameOver gameOver;
+
     public BaseDatosReflect bdr;
 
 	@Override
 	public void create () {
 
-		naveScreen= new NaveEspacio();
+		naveScreen= new NaveEspacio(this);
+		currentScreen=naveScreen;
+		gameOver=new GameOver(this, naveScreen.getPuntuacion());
 
-		currentScreen=new NaveEspacio(this);
-
-		setScreen(currentScreen);
+		setScreen(naveScreen);
 	}
 
 

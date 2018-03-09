@@ -20,6 +20,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.reflectorama.game.MyGdxGame;
 
+import Utiles.MyGameCallback;
+
 /**
  * Created by Triboga on 3/3/18.
  */
@@ -29,6 +31,11 @@ public class GameOver extends PantallaBase {
     private Stage escena;
     private Image gameover;
     private Texture fondo;
+
+    public void setPuntos_(int puntos_) {
+        this.puntos_ = puntos_;
+    }
+
     private int puntos_;
     private MyGdxGame g;
     public static AssetManager manager = new AssetManager();
@@ -65,17 +72,24 @@ public class GameOver extends PantallaBase {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 g.bdr.saveCurrentGame(puntos_);
-                g.currentScreen = new NaveEspacio(new MyGdxGame(g.myGameCallback, g.bdr));
-                g.setScreen(g.currentScreen);
+
+                NaveEspacio naveEspacio = new NaveEspacio(new MyGdxGame(g.myGameCallback, g.bdr));
+                naveEspacio.GameInit();
+
+               g.currentScreen = naveEspacio;
+               g.setScreen(g.currentScreen);
 
 
+                dispose();
             }
         });
+
         menuButton.addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 g.bdr.saveCurrentGame(puntos_);
-                g.myGameCallback.startActivity();
+                //g.myGameCallback.startActivity();
+                dispose();
 
             }
         });
@@ -85,6 +99,7 @@ public class GameOver extends PantallaBase {
         escena.addActor(menuButton);
 
     }
+
 
     @Override
     public void dispose() {
@@ -103,7 +118,7 @@ public class GameOver extends PantallaBase {
     @Override
     public void hide() {
         super.hide();
-       // g.myGameCallback.musicaOff();
+        g.myGameCallback.musicaOff();
         Gdx.input.setInputProcessor(null);
 
 
@@ -111,7 +126,8 @@ public class GameOver extends PantallaBase {
 
     @Override
     public void pause() {
-
+        super.pause();
+        g.myGameCallback.musicaOff();
     }
 
     @Override

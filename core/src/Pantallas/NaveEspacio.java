@@ -6,22 +6,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g3d.particles.values.MeshSpawnShapeValue;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RotateByAction;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.reflectorama.game.MyGdxGame;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Random;
 
 import Actores.ActorBender;
@@ -64,6 +57,11 @@ public class NaveEspacio extends PantallaBase {
     private InputMultiplexer multiplexer;
 
     private int vida;
+
+    public int getPuntuacion() {
+        return puntuacion;
+    }
+
     private int puntuacion;
     private static final int VIDA_INICIAL = 3;
 
@@ -71,6 +69,8 @@ public class NaveEspacio extends PantallaBase {
     private float anchoPantalla;
 
     private boolean debugmode;
+
+    private EscuchadorPantalla escuchadorPantalla;
 
     private static final int BENDERS_FINITOS=1000;
     private int contadorBenders;
@@ -131,7 +131,7 @@ public class NaveEspacio extends PantallaBase {
         actores.addActor(actorVida2);
         actores.addActor(actorVida3);
 
-        EscuchadorPantalla escuchadorPantalla = new EscuchadorPantalla(e1, e2, e3, e4);
+        escuchadorPantalla = new EscuchadorPantalla(e1, e2, e3, e4);
 
         escena.addActor(actores);
 
@@ -234,8 +234,12 @@ public class NaveEspacio extends PantallaBase {
                             Actions.run(new Runnable() {
                                 @Override
                                 public void run() {
-                                    game.currentScreen = new GameOver(game, puntuacion);
-                                    game.setScreen(game.currentScreen);
+
+                                    game.bdr.saveCurrentGame(puntuacion);
+                                    game.myGameCallback.startActivity();
+                                    dispose();
+
+                                    //game.setScreen(game.gameOver);
                                 }
                             })));
                     RotateByAction ra = new RotateByAction();
@@ -279,10 +283,16 @@ public class NaveEspacio extends PantallaBase {
 
     private boolean isCollision(ActorEscudo escudo, ActorBender bender) {
 
-        if (Intersector.overlapConvexPolygons(escudo.getLine(), bender.getPligon()))
+        return Intersector.overlapConvexPolygons(escudo.getLine(), bender.getPligon());
+    }
 
-            return true;
-        return false;
+    public void GameInit(){
+        contadorBenders=0;
+        vida=VIDA_INICIAL;
+        puntuacion=0;
+        escuchadorPantalla = new EscuchadorPantalla(e1, e2, e3, e4);
+        Gdx.input.setInputProcessor(escuchadorPantalla);
+
     }
 
     @Override
@@ -294,7 +304,12 @@ public class NaveEspacio extends PantallaBase {
 
     @Override
     public void dispose() {
+        super.dispose();
         escena.dispose();
+        escuchadorPantalla.dispose();
+        fondo.dispose();
+
+        game.myGameCallback.musicaOff();
     }
 
     @Override
@@ -306,14 +321,14 @@ public class NaveEspacio extends PantallaBase {
     @Override
     public void resume() {
         super.resume();
+        GameInit();
         game.myGameCallback.musicaOn();
     }
 
     @Override
     public void show() {
         super.show();
-        game.myGameCallback.musicaOn();
-
     }
+
 }
 

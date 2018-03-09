@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
@@ -19,11 +21,12 @@ public class AndroidLauncher extends AndroidApplication implements MyGameCallbac
 
     private MyGdxGame myGdxGame;
     private SharedPreferences myPreferences;
-
+    Intent i ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+       i = new Intent(this, MenuInicio.class);
         super.onCreate(savedInstanceState);
         BaseDatosAndroidReflectorama baseDatos = new BaseDatosAndroidReflectorama(this);
         myPreferences
@@ -35,7 +38,7 @@ public class AndroidLauncher extends AndroidApplication implements MyGameCallbac
 
     @Override
     public void startActivity() {
-        Intent i = new Intent(this, MenuInicio.class);
+
         startActivity(i);
     }
 
@@ -53,7 +56,7 @@ public class AndroidLauncher extends AndroidApplication implements MyGameCallbac
         if (myPreferences.getBoolean("musica", true)) {
             Intent intentmus = new Intent(this, AudioServiceJuego.class);
             intentmus.putExtra("action", AudioServiceJuego.PAUSE);
-            startService(intentmus);
+            stopService(intentmus);
         }
     }
 
@@ -69,5 +72,21 @@ public class AndroidLauncher extends AndroidApplication implements MyGameCallbac
     @Override
     public boolean getDebugmode() {
         return (myPreferences.getBoolean("debugMode", false));
+    }
+
+    @Override
+    public void lanzatoast() {
+        //Toast.makeText(this, "Pausa juego", Toast.LENGTH_LONG).show();
+        Log.d("pausa","del juego");
+       //
+        // musicaOff();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //Toast.makeText(this, "Hola pausaAndroid", Toast.LENGTH_LONG).show();
+        Log.d("pausa","de la actividad");
+        //musicaOff();
     }
 }

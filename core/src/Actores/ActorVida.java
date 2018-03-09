@@ -21,6 +21,7 @@ public class ActorVida extends Actor {
         float anchoPantalla=Gdx.graphics.getWidth();
         float anchoVida=anchoPantalla/17;
         float altoVida = anchoVida*1.2f;
+
         t = new Texture("ReflectoMatic/vidasfry.png");
         this.sprite = new Sprite(t);
 

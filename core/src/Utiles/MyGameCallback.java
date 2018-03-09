@@ -17,4 +17,6 @@ public interface MyGameCallback {
     boolean getCrazyMode();
 
     boolean getDebugmode();
+
+    void lanzatoast();
 }

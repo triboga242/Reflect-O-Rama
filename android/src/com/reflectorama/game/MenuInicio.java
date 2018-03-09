@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.EventLog;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.badlogic.gdx.Gdx;
@@ -23,11 +25,12 @@ import static Utiles.BaseDatosReflect.getScoreTablename;
  * Created by Triboga on 28/2/18.
  */
 
-public class MenuInicio extends Activity {
+public  class MenuInicio extends Activity {
 
     private SharedPreferences myPreferences;
     private SharedPreferences.Editor myEditor;
     private int contador;
+
 
 
     @Override
@@ -49,6 +52,8 @@ public class MenuInicio extends Activity {
 
 
         }
+
+
 
         myEditor.putBoolean("debugMode", false);
         myEditor.commit();
@@ -121,6 +126,23 @@ public class MenuInicio extends Activity {
         }
         myEditor.putBoolean("debugMode", false);
         myEditor.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     @Override
