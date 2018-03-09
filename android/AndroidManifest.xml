@@ -6,7 +6,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/logoapp"
+        android:icon="@mipmap/reflectologo"
         android:label="@string/app_name"
         android:theme="@style/GdxTheme">
 
