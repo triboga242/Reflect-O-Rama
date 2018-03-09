@@ -239,7 +239,6 @@ public class NaveEspacio extends PantallaBase {
                                     game.myGameCallback.startActivity();
                                     dispose();
 
-                                    //game.setScreen(game.gameOver);
                                 }
                             })));
                     RotateByAction ra = new RotateByAction();
