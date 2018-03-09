@@ -238,6 +238,11 @@ public class NaveEspacio extends PantallaBase {
                                     game.bdr.saveCurrentGame(puntuacion);
                                     game.myGameCallback.startActivity();
                                     dispose();
+                                    try {
+                                        NaveEspacio.this.finalize();
+                                    } catch (Throwable throwable) {
+                                        throwable.printStackTrace();
+                                    }
 
                                 }
                             })));
@@ -329,5 +334,9 @@ public class NaveEspacio extends PantallaBase {
         super.show();
     }
 
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+    }
 }
 

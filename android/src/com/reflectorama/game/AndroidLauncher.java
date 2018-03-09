@@ -1,20 +1,15 @@
 package com.reflectorama.game;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.reflectorama.game.MyGdxGame;
 
 import BaseDatos.BaseDatosAndroidReflectorama;
-import Pantallas.NaveEspacio;
-import Utiles.BaseDatosReflect;
 import Utiles.MyGameCallback;
 
 public class AndroidLauncher extends AndroidApplication implements MyGameCallback {
@@ -38,7 +33,6 @@ public class AndroidLauncher extends AndroidApplication implements MyGameCallbac
 
     @Override
     public void startActivity() {
-
         startActivity(i);
     }
 
@@ -74,19 +68,10 @@ public class AndroidLauncher extends AndroidApplication implements MyGameCallbac
         return (myPreferences.getBoolean("debugMode", false));
     }
 
-    @Override
-    public void lanzatoast() {
-        //Toast.makeText(this, "Pausa juego", Toast.LENGTH_LONG).show();
-        Log.d("pausa","del juego");
-       //
-        // musicaOff();
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
-        //Toast.makeText(this, "Hola pausaAndroid", Toast.LENGTH_LONG).show();
         Log.d("pausa","de la actividad");
-        //musicaOff();
     }
 }

@@ -12,11 +12,8 @@ public interface MyGameCallback {
 
     void musicaOff();
 
-    boolean crazyMode = false;
-
     boolean getCrazyMode();
 
     boolean getDebugmode();
 
-    void lanzatoast();
 }

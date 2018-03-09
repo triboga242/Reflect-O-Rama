@@ -5,20 +5,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.EventLog;
-import android.view.KeyEvent;
 import android.view.View;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
-
-import BaseDatos.BaseDatosAndroidReflectorama;
-import BaseDatos.BaseDatosHelper;
-
-import static Utiles.BaseDatosReflect.getScoreTablename;
 
 
 /**
@@ -53,12 +42,9 @@ public  class MenuInicio extends Activity {
 
         }
 
-
-
         myEditor.putBoolean("debugMode", false);
         myEditor.commit();
         setContentView(R.layout.menuinicio);
-
 
     }
 
@@ -136,8 +122,6 @@ public  class MenuInicio extends Activity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
-
-
 
 
     @Override
