@@ -110,6 +110,7 @@ public  class MenuInicio extends Activity {
             intent.putExtra("action", AudioService.START);
             startService(intent);
         }
+        contador=0;
         myEditor.putBoolean("debugMode", false);
         myEditor.commit();
     }

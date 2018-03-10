@@ -24,7 +24,7 @@ import java.util.Random;
  */
 
 public class ActorBender extends Actor {
-    protected Sprite sprite;
+    public Sprite sprite;
 
     protected Random randomGenerator;
     protected int altoPantalla;
@@ -158,9 +158,6 @@ public class ActorBender extends Actor {
 
         sprite.setScale(getScaleX(), getScaleY());
         sprite.setRotation(getRotation());
-        //polygon.setRotation(1270);
-        //polygon.setPosition(getX(), getY());
-
         sprite.setPosition(getX(), getY());
         sprite.setColor(getColor().r, getColor().g, getColor().b, getColor().a);
         sprite.draw(batch);
@@ -169,7 +166,6 @@ public class ActorBender extends Actor {
     public Polygon getHitBox() {
 
         Matrix4 normalProjection = new Matrix4().setToOrtho2D(0, 0, Gdx.graphics.getWidth(),  Gdx.graphics.getHeight());
-        Rectangle rect = new Rectangle(getX(), getY(), getWidth(), getHeight());
          polygon = new Polygon(new float[]{getX(),getY(),
                 getX()+getWidth(),getY(),
                 getX()+getWidth(), getY()+getHeight(),
@@ -181,7 +177,6 @@ public class ActorBender extends Actor {
         spriteDebugger.setProjectionMatrix(normalProjection);
         spriteDebugger.begin(ShapeRenderer.ShapeType.Line);
         spriteDebugger.setColor(Color.GREEN);
-        spriteDebugger.rect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
         spriteDebugger.polygon(polygon.getTransformedVertices());
 
         spriteDebugger.end();

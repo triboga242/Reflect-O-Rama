@@ -62,10 +62,10 @@ public class ActorNave extends Actor {
 
     public Polygon getPolygon(){
         Polygon polygon = new Polygon(new float[]{
-                getX()+getWidth()/10,getY()+getHeight()/10,
-                getX()+getWidth()-getWidth()/10,getY()+getHeight()/10,
-                getX()+getWidth()-getWidth()/10, getY()+getHeight()-getHeight()/10,
-                getX()+getWidth()/10,getY()+getHeight()-getHeight()/10
+                getX()+getWidth()/9,getY()+getHeight()/9,
+                getX()+getWidth()-getWidth()/9,getY()+getHeight()/9,
+                getX()+getWidth()-getWidth()/9, getY()+getHeight()-getHeight()/9,
+                getX()+getWidth()/9,getY()+getHeight()-getHeight()/9
         });
         polygon.setOrigin((getX()+getWidth())/2, (getY()+getHeight())/2);
         return polygon;

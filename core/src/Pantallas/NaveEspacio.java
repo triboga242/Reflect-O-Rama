@@ -6,11 +6,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RotateByAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.reflectorama.game.MyGdxGame;
 
@@ -19,10 +22,12 @@ import java.util.Random;
 
 import Actores.ActorBender;
 import Actores.ActorEscudo;
+import Actores.ActorGameOver;
 import Actores.ActorNave;
 import Actores.ActorVida;
 import Controladores.ControladorBenderes;
 import Controladores.EscuchadorPantalla;
+import Utiles.Explosion;
 
 
 /**
@@ -34,6 +39,7 @@ public class NaveEspacio extends PantallaBase {
 
     private Stage escena;
 
+    private SpriteBatch spriteBatch;
     private Group actores;
 
     private ActorNave nave;
@@ -53,6 +59,8 @@ public class NaveEspacio extends PantallaBase {
     private Texture naveTextura;
     private Texture benderTextura;
     private Texture fondo;
+
+    private ArrayList<Explosion> explosions;
 
     private InputMultiplexer multiplexer;
 
@@ -86,6 +94,8 @@ public class NaveEspacio extends PantallaBase {
 
         game = g;
 
+        spriteBatch=new SpriteBatch();
+
         numeroBenders=25;
         contadorBenders=0;
 
@@ -101,13 +111,14 @@ public class NaveEspacio extends PantallaBase {
         controlBender = new ControladorBenderes();
 
         escena = new Stage(new FillViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+
         naveTextura = new Texture(Gdx.files.internal("ReflectoMatic/Nave-01-small.png/"));
         benderTextura = new Texture(Gdx.files.internal("ReflectoMatic/Bender.png"));
         actorVida1 = new ActorVida(1);
         actorVida2 = new ActorVida(2);
         actorVida3 = new ActorVida(3);
 
-
+        explosions= new ArrayList<Explosion>();
 
         actores = new Group();
         actores.addActor(nave = new ActorNave(naveTextura));
@@ -167,24 +178,52 @@ public class NaveEspacio extends PantallaBase {
 
             nave.getHitBoxShape();
 
-            for (ActorBender b : ControladorBenderes.benders) {
+            for (ActorBender b : controlBender.benders) {
 
                 b.getRectangle();
                 b.getHitBox();
             }
         }
         ArrayList<ActorBender> bendersMuertos = new ArrayList<ActorBender>();
+        ArrayList<Explosion> explosionesExplotadas = new ArrayList<Explosion>();
 
 
 
+        for (Explosion e: explosions){
+            e.update(delta);
+            if (e.remove){
+                e.clear();
+                e.remove();
+                explosionesExplotadas.add(e);
+            }
+        }
 
-        for (ActorBender b : ControladorBenderes.benders) {
+
+        explosions.removeAll(explosionesExplotadas);
+
+        for (Explosion e: explosionesExplotadas){
+            e.clear();
+            e.remove();
+        }
+
+
+        for (ActorBender b : controlBender.benders) {
+
+            for (Explosion e: explosions){
+                e.render((spriteBatch));
+            }
+
 
             //A veces hay colisiona con dos escudos a la vez, podria solucionarlo poniendo un boleano que controle que solo cuente una
             //colision, pero lo dejo para que sea un tipo de "bonus".
 
             if (isCollision(e1, b) && e1.isVisible()) {
                 bendersMuertos.add(b);
+
+                Explosion explosion= new Explosion(b.getX(), b.getY());
+                actores.addActor(explosion);
+                explosionesExplotadas.add(explosion);
+
                 puntuacion++;
                 b.clear();
                 b.remove();
@@ -193,6 +232,9 @@ public class NaveEspacio extends PantallaBase {
 
             if (isCollision(e2, b) && e2.isVisible()) {
                 bendersMuertos.add(b);
+                Explosion explosion= new Explosion(b.getX(), b.getY());
+                actores.addActor(explosion);
+                explosionesExplotadas.add(explosion);
                 puntuacion++;
                 b.clear();
                 b.remove();
@@ -200,6 +242,9 @@ public class NaveEspacio extends PantallaBase {
             }
             if (isCollision(e3, b) && e3.isVisible()) {
                 bendersMuertos.add(b);
+                Explosion explosion= new Explosion(b.getX(), b.getY());
+                actores.addActor(explosion);
+                explosionesExplotadas.add(explosion);
                 puntuacion++;
                 b.clear();
                 b.remove();
@@ -207,6 +252,9 @@ public class NaveEspacio extends PantallaBase {
             }
             if (isCollision(e4, b) && e4.isVisible()) {
                 bendersMuertos.add(b);
+                Explosion explosion= new Explosion(b.getX(), b.getY());
+                actores.addActor(explosion);
+                explosionesExplotadas.add(explosion);
                 puntuacion++;
                 b.remove();
                 b.clear();
@@ -215,6 +263,9 @@ public class NaveEspacio extends PantallaBase {
 
 
             if (nave.colisiona(b)) {
+                Explosion explosion= new Explosion(b.getX(), b.getY());
+                actores.addActor(explosion);
+                explosionesExplotadas.add(explosion);
                 bendersMuertos.add(b);
                 b.remove();
                 b.clear();
@@ -230,31 +281,38 @@ public class NaveEspacio extends PantallaBase {
 
 
                 if (vida == 0) {
-                    escena.addAction(Actions.sequence(Actions.delay(1.5f),
+
+                    gameOver();
+
+                    escena.addAction(Actions.sequence(Actions.delay(2.5f),
                             Actions.run(new Runnable() {
                                 @Override
                                 public void run() {
 
-                                    game.bdr.saveCurrentGame(puntuacion);
-                                    game.myGameCallback.startActivity();
-                                    dispose();
+
+                                    if (!debugmode) {
+                                        game.bdr.saveCurrentGame(puntuacion);
+                                    }
                                     try {
-                                        NaveEspacio.this.finalize();
+                                        finalize();
                                     } catch (Throwable throwable) {
                                         throwable.printStackTrace();
                                     }
+                                    for (ActorBender a : controlBender.benders) {
+                                        a.remove();
+                                        a.clear();
+                                    }
+                                    controlBender.benders.clear();
 
+                                    Gdx.app.exit();
                                 }
                             })));
-                    RotateByAction ra = new RotateByAction();
-                    ra.setAmount(30);
-                    ra.setDuration(1);
-                    nave.addAction(ra);
+
 
                 }
             }
         }
-        ControladorBenderes.benders.removeAll(bendersMuertos);
+        controlBender.benders.removeAll(bendersMuertos);
 
         if (game.myGameCallback.getCrazyMode()) {
             if (ControladorBenderes.benders.size() <= 10) {
@@ -262,10 +320,15 @@ public class NaveEspacio extends PantallaBase {
             }
         }else {
 
-            if (contadorBenders<BENDERS_FINITOS && ControladorBenderes.benders.size() <= 10){
+            if (contadorBenders<BENDERS_FINITOS && controlBender.benders.size() <= 10){
                 crearBenders(numeroBenders);
+                Gdx.app.log("CREANDO", "25 VENDERS MAS, VAN "+contadorBenders);
             }
+            Gdx.app.log("CREADOS", "VENDERs "+contadorBenders);
+            Gdx.app.log("VIVOS", "VENDERs "+controlBender.benders.size());
+
         }
+
         escena.draw();
     }
 
@@ -299,6 +362,25 @@ public class NaveEspacio extends PantallaBase {
 
     }
 
+    private void gameOver(){
+
+        ActorGameOver gameOver = new ActorGameOver(nave);
+
+        RotateByAction ra = new RotateByAction();
+        ra.setAmount(30);
+        ra.setDuration(1);
+
+        MoveToAction esperaNave=new MoveToAction();
+        esperaNave.setDuration(1.5f);
+
+        MoveToAction moveToActionfueraNave=new MoveToAction();
+        moveToActionfueraNave.setDuration(1.5f);
+        moveToActionfueraNave.setPosition(anchoPantalla*2, altoPantalla*2);
+
+        nave.addAction(new SequenceAction(ra,esperaNave, moveToActionfueraNave));
+        escena.addActor(gameOver);
+    }
+
     @Override
     public void resize(int width, int height) {
         escena.getBatch().begin();
@@ -322,10 +404,10 @@ public class NaveEspacio extends PantallaBase {
         game.myGameCallback.musicaOff();
     }
 
+
     @Override
     public void resume() {
         super.resume();
-        GameInit();
         game.myGameCallback.musicaOn();
     }
 

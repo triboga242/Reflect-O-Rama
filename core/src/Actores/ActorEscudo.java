@@ -137,18 +137,13 @@ public class ActorEscudo extends Actor {
         if (modo == 1) {
 
             vertices = new float[]{
-                    getX(),
-                    getY(),
-                    getX() + getHeight() / 4,
-                    getY() + getWidth() / 4,
-                    getX() + getHeight() / 2,
-                    getY() + getWidth() / 2,
-                    getX() + getWidth(),
-                    getY() + getHeight()};
+                    getX(), getY(),
+                    getX() + (getWidth()*0.2f), getY() + getHeight()-getHeight()*0.2f,
+                    getX() + getWidth(), getY() + getHeight()};
         } else if (modo == 2) {
 
             vertices = new float[]{
-                    getX() + getWidth()- getWidth()/4 , getY() + getHeight() - getHeight()/4,
+                    getX() + getWidth()- getWidth()*0.2f , getY() + getHeight() - getHeight()*0.2f,
                     getX() + getWidth(), getY(),
                     getX() , getY() + getHeight(),
 
