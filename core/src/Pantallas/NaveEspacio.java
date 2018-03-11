@@ -96,7 +96,7 @@ public class NaveEspacio extends PantallaBase {
 
         spriteBatch=new SpriteBatch();
 
-        numeroBenders=25;
+        numeroBenders=15;
         contadorBenders=0;
 
         debugmode=game.myGameCallback.getDebugmode();
@@ -184,8 +184,8 @@ public class NaveEspacio extends PantallaBase {
                 b.getHitBox();
             }
         }
-        ArrayList<ActorBender> bendersMuertos = new ArrayList<ActorBender>();
-        ArrayList<Explosion> explosionesExplotadas = new ArrayList<Explosion>();
+        final ArrayList<ActorBender> bendersMuertos = new ArrayList<ActorBender>();
+        final ArrayList<Explosion> explosionesExplotadas = new ArrayList<Explosion>();
 
 
 
@@ -263,7 +263,7 @@ public class NaveEspacio extends PantallaBase {
 
 
             if (nave.colisiona(b)) {
-                Explosion explosion= new Explosion(b.getX(), b.getY());
+                final Explosion explosion= new Explosion(b.getX(), b.getY());
                 actores.addActor(explosion);
                 explosionesExplotadas.add(explosion);
                 bendersMuertos.add(b);
@@ -302,8 +302,14 @@ public class NaveEspacio extends PantallaBase {
                                         a.remove();
                                         a.clear();
                                     }
-                                    controlBender.benders.clear();
 
+                                    gameOver();
+                                    controlBender.benders.clear();
+                                    explosion.clear();
+                                    explosionesExplotadas.clear();
+                                    bendersMuertos.clear();
+                                    GameInit();
+                                    escena.dispose();
                                     Gdx.app.exit();
                                 }
                             })));
@@ -371,7 +377,8 @@ public class NaveEspacio extends PantallaBase {
         ra.setDuration(1);
 
         MoveToAction esperaNave=new MoveToAction();
-        esperaNave.setDuration(1.5f);
+        esperaNave.setPosition(nave.getX()-nave.getWidth(), nave.getY()-nave.getHeight());
+        esperaNave.setDuration(1f);
 
         MoveToAction moveToActionfueraNave=new MoveToAction();
         moveToActionfueraNave.setDuration(1.5f);
@@ -379,6 +386,8 @@ public class NaveEspacio extends PantallaBase {
 
         nave.addAction(new SequenceAction(ra,esperaNave, moveToActionfueraNave));
         escena.addActor(gameOver);
+
+
     }
 
     @Override
@@ -397,6 +406,7 @@ public class NaveEspacio extends PantallaBase {
 
         game.myGameCallback.musicaOff();
     }
+
 
     @Override
     public void pause() {

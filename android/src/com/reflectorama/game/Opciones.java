@@ -45,11 +45,11 @@ public class Opciones extends Activity implements View.OnClickListener {
         }
 
         if (myPreferences.getBoolean("crazy_mode", true)) {
-            tb2.setText("ON");
+            tb2.setText("OFF");
             cont2=1;
 
         }else {
-            tb2.setText("OFF");
+            tb2.setText("ON");
             cont2 = 0;
         }
         tb.setOnClickListener(this);
@@ -60,11 +60,11 @@ public class Opciones extends Activity implements View.OnClickListener {
 
         cont2++;
         if (cont2 % 2==0){
-            tb2.setText("OFF");
+            tb2.setText("ON");
             myEditor.putBoolean("crazy_mode", false);
             myEditor.commit();
         } else {
-            tb2.setText("ON");
+            tb2.setText("OFF");
             myEditor.putBoolean("crazy_mode", true);
             myEditor.commit();
         }
