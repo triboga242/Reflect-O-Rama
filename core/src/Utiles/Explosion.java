@@ -23,10 +23,16 @@ public class Explosion extends Actor {
 
     public boolean remove = false;
 
+    public void setStatetime(float statetime) {
+        this.statetime = statetime;
+    }
+
     public Explosion (float x, float y) {
         this.x = x - OFFSET;
         this.y = y - OFFSET;
         statetime = 0;
+        remove=false;
+        anim=null;
 
         if (anim == null)
             anim = new Animation(FRAME_LENGTH, TextureRegion.split(new Texture("ReflectoMatic/explosion.png"), IMAGE_SIZE, IMAGE_SIZE)[0]);
@@ -35,8 +41,8 @@ public class Explosion extends Actor {
 
     public void update (float deltatime) {
         statetime += deltatime;
-        if (anim.isAnimationFinished(statetime))
-            remove = true;
+        if (anim.isAnimationFinished(statetime)){
+            remove = true;}
     }
 
     public void render (SpriteBatch batch) {

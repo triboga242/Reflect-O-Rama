@@ -20,6 +20,8 @@ import com.reflectorama.game.MyGdxGame;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.naming.Context;
+
 import Actores.ActorBender;
 import Actores.ActorEscudo;
 import Actores.ActorGameOver;
@@ -109,6 +111,7 @@ public class NaveEspacio extends PantallaBase {
 
         game.myGameCallback.musicaOn();
         controlBender = new ControladorBenderes();
+        controlBender.benders = new ArrayList<ActorBender>();
 
         escena = new Stage(new FillViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
@@ -192,8 +195,6 @@ public class NaveEspacio extends PantallaBase {
         for (Explosion e: explosions){
             e.update(delta);
             if (e.remove){
-                e.clear();
-                e.remove();
                 explosionesExplotadas.add(e);
             }
         }
@@ -202,7 +203,6 @@ public class NaveEspacio extends PantallaBase {
         explosions.removeAll(explosionesExplotadas);
 
         for (Explosion e: explosionesExplotadas){
-            e.clear();
             e.remove();
         }
 
@@ -243,6 +243,7 @@ public class NaveEspacio extends PantallaBase {
             if (isCollision(e3, b) && e3.isVisible()) {
                 bendersMuertos.add(b);
                 Explosion explosion= new Explosion(b.getX(), b.getY());
+                explosion.setStatetime(0);
                 actores.addActor(explosion);
                 explosionesExplotadas.add(explosion);
                 puntuacion++;
@@ -253,6 +254,8 @@ public class NaveEspacio extends PantallaBase {
             if (isCollision(e4, b) && e4.isVisible()) {
                 bendersMuertos.add(b);
                 Explosion explosion= new Explosion(b.getX(), b.getY());
+                explosion.setStatetime(0);
+
                 actores.addActor(explosion);
                 explosionesExplotadas.add(explosion);
                 puntuacion++;
@@ -305,7 +308,10 @@ public class NaveEspacio extends PantallaBase {
 
                                     gameOver();
                                     controlBender.benders.clear();
-                                    explosion.clear();
+                                  //  controlBender.benders = new ArrayList<ActorBender>();
+
+
+                                    explosions= new ArrayList<Explosion>();
                                     explosionesExplotadas.clear();
                                     bendersMuertos.clear();
                                     GameInit();
@@ -430,5 +436,6 @@ public class NaveEspacio extends PantallaBase {
     protected void finalize() throws Throwable {
         super.finalize();
     }
+
 }
 

@@ -42,6 +42,7 @@ public class ActorBender extends Actor {
     private ShapeRenderer spriteDebugger;
 
     private  Polygon polygon;
+    private Texture texture;
     private int currentRandom;
 
 
@@ -51,7 +52,10 @@ public class ActorBender extends Actor {
 
         this.espera = espera;
         this.velocidad = velo;
+        this.polygon=new Polygon();
+        this.texture=benderTextura;
 
+        spriteDebugger=new ShapeRenderer();
         sprite = new Sprite(benderTextura);
         altoPantalla = Gdx.graphics.getHeight();
         anchoPantalla = Gdx.graphics.getWidth();
@@ -147,7 +151,6 @@ public class ActorBender extends Actor {
 
         super.act(deltaTime);
 
-
     }
 
 
@@ -166,14 +169,15 @@ public class ActorBender extends Actor {
     public Polygon getHitBox() {
 
         Matrix4 normalProjection = new Matrix4().setToOrtho2D(0, 0, Gdx.graphics.getWidth(),  Gdx.graphics.getHeight());
-         polygon = new Polygon(new float[]{getX(),getY(),
+        polygon.setVertices(new float[]{getX(),getY(),
                 getX()+getWidth(),getY(),
                 getX()+getWidth(), getY()+getHeight(),
                 getX(),getY()+getHeight()});
+
         polygon.setOrigin((getX()+getWidth())/2, (getY()+getHeight())/2);
 
 
-        spriteDebugger=new ShapeRenderer();
+
         spriteDebugger.setProjectionMatrix(normalProjection);
         spriteDebugger.begin(ShapeRenderer.ShapeType.Line);
         spriteDebugger.setColor(Color.GREEN);
@@ -186,10 +190,15 @@ public class ActorBender extends Actor {
     }
 
     public Polygon getPligon(){
-        return polygon = new Polygon(new float[]{getX(),getY(),
+
+
+        polygon.setVertices(new float[]{getX(),getY(),
                 getX()+getWidth(),getY(),
                 getX()+getWidth(), getY()+getHeight(),
                 getX(),getY()+getHeight()});
+
+
+        return polygon;
     }
 
     public Rectangle getRectangle(){return sprite.getBoundingRectangle();}
@@ -197,6 +206,12 @@ public class ActorBender extends Actor {
     @Override
     public void clear() {
         super.clear();
+    }
+
+    @Override
+    public boolean remove() {
+        return super.remove();
+
     }
 
     @Override

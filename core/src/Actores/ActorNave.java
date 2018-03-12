@@ -21,9 +21,13 @@ public class ActorNave extends Actor {
     protected Sprite sprite;
     protected boolean colliding;
     private int contador;
+    private ShapeRenderer spriteDebugger;
+
+    private Polygon polygon;
 
     public ActorNave(Texture t) {
         super();
+         spriteDebugger=new ShapeRenderer();
         contador=0;
         sprite = new Sprite(t);
         sprite.setBounds((Gdx.graphics.getWidth() / 2 - (Gdx.graphics.getWidth()*0.1f)) ,
@@ -37,6 +41,15 @@ public class ActorNave extends Actor {
                 Gdx.graphics.getHeight()*0.2f);
 
         setName("PlanetExpress");
+
+        polygon = new Polygon(new float[]{
+                getX()+getWidth()/9,getY()+getHeight()/9,
+                getX()+getWidth()-getWidth()/9,getY()+getHeight()/9,
+                getX()+getWidth()-getWidth()/9, getY()+getHeight()-getHeight()/9,
+                getX()+getWidth()/9,getY()+getHeight()-getHeight()/9
+        });
+        polygon.setOrigin((getX()+getWidth())/2, (getY()+getHeight())/2);
+
         colliding=false;
     }
 
@@ -48,7 +61,7 @@ public class ActorNave extends Actor {
         polygon.setOrigin((getX()+getWidth())/2, (getY()+getHeight())/2);
 
 
-       ShapeRenderer spriteDebugger=new ShapeRenderer();
+
         spriteDebugger.setProjectionMatrix(normalProjection);
         spriteDebugger.begin(ShapeRenderer.ShapeType.Line);
         spriteDebugger.setColor(Color.GREEN);
@@ -61,19 +74,10 @@ public class ActorNave extends Actor {
     }
 
     public Polygon getPolygon(){
-        Polygon polygon = new Polygon(new float[]{
-                getX()+getWidth()/9,getY()+getHeight()/9,
-                getX()+getWidth()-getWidth()/9,getY()+getHeight()/9,
-                getX()+getWidth()-getWidth()/9, getY()+getHeight()-getHeight()/9,
-                getX()+getWidth()/9,getY()+getHeight()-getHeight()/9
-        });
-        polygon.setOrigin((getX()+getWidth())/2, (getY()+getHeight())/2);
+
         return polygon;
     }
 
-    public Rectangle getHitBox() {
-        return sprite.getBoundingRectangle();
-    }
     @Override
     public void act(float delta) {
         super.act(delta);

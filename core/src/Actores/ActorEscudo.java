@@ -21,12 +21,16 @@ public class ActorEscudo extends Actor {
     Texture t;
     protected Sprite sprite;
     protected int modo;
+    private Polygon polygon;
+
+    private ShapeRenderer spriteDebugger;
 
     public ActorEscudo(int modo) {
         super();
         t = new Texture("ReflectoMatic/Escudo.png");
         sprite = new Sprite(t);
         modoEscudo(modo);
+        polygon= new Polygon();
 
 
     }
@@ -98,7 +102,7 @@ public class ActorEscudo extends Actor {
 
                 break;
         }
-
+        spriteDebugger = new ShapeRenderer();
     }
 
     @Override
@@ -111,16 +115,11 @@ public class ActorEscudo extends Actor {
         sprite.draw(batch);
     }
 
-    public Sprite getSprite() {
-        return sprite;
-    }
 
     public Polygon getTriangle() {
 
         Matrix4 normalProjection = new Matrix4().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        ShapeRenderer spriteDebugger;
-        spriteDebugger = new ShapeRenderer();
 
         spriteDebugger.setProjectionMatrix(normalProjection);
         spriteDebugger.begin(ShapeRenderer.ShapeType.Line);
@@ -163,7 +162,9 @@ public class ActorEscudo extends Actor {
             };
         }
 
-        return new Polygon(vertices);
+
+         polygon.setVertices(vertices);
+        return polygon;
 
     }
 }
