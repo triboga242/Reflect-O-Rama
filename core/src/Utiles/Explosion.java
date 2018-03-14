@@ -34,8 +34,9 @@ public class Explosion extends Actor {
         remove=false;
         anim=null;
 
-        if (anim == null)
+        if (anim == null) {
             anim = new Animation(FRAME_LENGTH, TextureRegion.split(new Texture("ReflectoMatic/explosion.png"), IMAGE_SIZE, IMAGE_SIZE)[0]);
+        }
 
     }
 

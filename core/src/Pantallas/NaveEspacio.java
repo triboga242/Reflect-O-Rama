@@ -317,6 +317,7 @@ public class NaveEspacio extends PantallaBase {
                                     GameInit();
                                     escena.dispose();
                                     Gdx.app.exit();
+
                                 }
                             })));
 
@@ -409,7 +410,6 @@ public class NaveEspacio extends PantallaBase {
         escena.dispose();
         escuchadorPantalla.dispose();
         fondo.dispose();
-
         game.myGameCallback.musicaOff();
     }
 
@@ -436,6 +436,5 @@ public class NaveEspacio extends PantallaBase {
     protected void finalize() throws Throwable {
         super.finalize();
     }
-
 }
 
