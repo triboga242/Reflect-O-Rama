@@ -41,41 +41,9 @@ public class Puntuaciones extends Activity {
         setPuntos2();
     }
 
-
-
-    public void checkPuntos(int puntos){
-
-
-       int puntosAhora = myPreferences.getInt("jugador", 0);
-
-       if (puntos>puntosAhora){
-           myEditor.putInt("bender", puntosAhora + 1);
-           myEditor.putInt("jugador", puntosAhora);
-       }
-
-
-
-    }
-
-    public void setPuntos(int puntos){
-
-        bender=findViewById(R.id.bender);
-        jugador=findViewById(R.id.jugador);
-
-
-
-
-        if (myPreferences.getInt("jugador", 0)>0) {
-
-        }else{
-            myEditor.putInt("bender", 1);
-            myEditor.putInt("jugador", 0);
-            myEditor.commit();
-        }
-        bender.setText(String.valueOf(myPreferences.getInt("bender", 0)));
-        jugador.setText(String.valueOf(myPreferences.getInt("jugador", 0)));
-    }
-
+    /**
+     * Setear los puntos en la base de datos
+     */
 
     public void setPuntos2(){
 

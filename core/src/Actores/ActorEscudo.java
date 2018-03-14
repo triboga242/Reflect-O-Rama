@@ -35,6 +35,10 @@ public class ActorEscudo extends Actor {
 
     }
 
+    /**
+     * Constructor para los escudos
+     * @param modo 4 modos para la orientacion del escudo
+     */
     public void modoEscudo(int modo) {
 
         this.modo = modo;
@@ -116,10 +120,13 @@ public class ActorEscudo extends Actor {
     }
 
 
+    /**
+     * Para el modo debug
+     * @return el dibujo poligono de colision de los escudos
+     */
     public Polygon getTriangle() {
 
         Matrix4 normalProjection = new Matrix4().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
 
         spriteDebugger.setProjectionMatrix(normalProjection);
         spriteDebugger.begin(ShapeRenderer.ShapeType.Line);
@@ -131,6 +138,10 @@ public class ActorEscudo extends Actor {
         return getLine();
     }
 
+    /**
+     * Para comrpobar las colisiones
+     * @return las lines del poligono de colision de los escudos
+     */
     public Polygon getLine() {
         float[] vertices;
         if (modo == 1) {
@@ -162,9 +173,7 @@ public class ActorEscudo extends Actor {
             };
         }
 
-
          polygon.setVertices(vertices);
         return polygon;
-
     }
 }

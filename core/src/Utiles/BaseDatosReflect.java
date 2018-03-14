@@ -19,7 +19,9 @@ public abstract class BaseDatosReflect {
 
     public abstract void endCurrentGame(int score);
 
-
+    /**
+     * Constructor de la bbdd
+     */
     public BaseDatosReflect(){
         databaseVersion=1;
         databaseName="ReflectDB";

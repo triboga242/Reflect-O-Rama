@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 
 /**
+ * Cartel de Game Over que sale al finalizar la partida
+ *
  * Created by Triboga on 10/3/18.
  */
 
@@ -20,6 +22,12 @@ public class ActorGameOver extends Actor {
 
 
     private Sprite sprite;
+
+    /**
+     * Constructor del actor
+     *
+     * @param nave nave para tomar puntos de referencia
+     */
     public ActorGameOver(ActorNave nave) {
 
         float altoPantalla= Gdx.graphics.getHeight();

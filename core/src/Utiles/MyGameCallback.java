@@ -1,6 +1,7 @@
 package Utiles;
 
 /**
+ * Interfaz para pasar preferencias y configuraciones entre libgdx y android nativo
  * Created by Triboga on 3/3/18.
  */
 

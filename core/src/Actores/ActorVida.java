@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
+ * Iconos de vida con la cara de Fry
  * Created by Triboga on 6/3/18.
  */
 
@@ -14,6 +15,11 @@ public class ActorVida extends Actor {
 
     private Texture t;
     private Sprite sprite;
+
+    /**
+     * Constructor del actor
+     * @param modo si es la primera, segunda o tercera vida
+     */
     public ActorVida(int modo){
 
 

@@ -20,8 +20,6 @@ import com.reflectorama.game.MyGdxGame;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.naming.Context;
-
 import Actores.ActorBender;
 import Actores.ActorEscudo;
 import Actores.ActorGameOver;
@@ -68,10 +66,6 @@ public class NaveEspacio extends PantallaBase {
 
     private int vida;
 
-    public int getPuntuacion() {
-        return puntuacion;
-    }
-
     private int puntuacion;
     private static final int VIDA_INICIAL = 3;
 
@@ -86,9 +80,6 @@ public class NaveEspacio extends PantallaBase {
     private int contadorBenders;
     private long aux;
     private MyGdxGame game;
-
-    public NaveEspacio() {
-    }
 
 
     public NaveEspacio(final MyGdxGame g) {
@@ -160,6 +151,8 @@ public class NaveEspacio extends PantallaBase {
 
     @Override
     public void render(float delta) {
+
+        //Va creando y añadiendo ttodo a la escena
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -187,28 +180,27 @@ public class NaveEspacio extends PantallaBase {
                 b.getHitBox();
             }
         }
+
+        //Creamos listas para limpiar los actores "muertos"
         final ArrayList<ActorBender> bendersMuertos = new ArrayList<ActorBender>();
         final ArrayList<Explosion> explosionesExplotadas = new ArrayList<Explosion>();
 
 
-
+        //Recorre y controla las explosiones
         for (Explosion e: explosions){
             e.update(delta);
             if (e.remove){
                 explosionesExplotadas.add(e);
             }
         }
-
-
+        //Limpia las explosiones
         explosions.removeAll(explosionesExplotadas);
-
         for (Explosion e: explosionesExplotadas){
             e.remove();
         }
 
-
+        //Recorre y lanza la animacion de cada explosion si procede
         for (ActorBender b : controlBender.benders) {
-
             for (Explosion e: explosions){
                 e.render((spriteBatch));
             }
@@ -219,11 +211,9 @@ public class NaveEspacio extends PantallaBase {
 
             if (isCollision(e1, b) && e1.isVisible()) {
                 bendersMuertos.add(b);
-
                 Explosion explosion= new Explosion(b.getX(), b.getY());
                 actores.addActor(explosion);
                 explosionesExplotadas.add(explosion);
-
                 puntuacion++;
                 b.clear();
                 b.remove();
@@ -286,13 +276,15 @@ public class NaveEspacio extends PantallaBase {
                 if (vida == 0) {
 
                     gameOver();
-
+/**
+ * Añade un delay para dar tiempo a las animaciones de game over
+ */
                     escena.addAction(Actions.sequence(Actions.delay(2.5f),
                             Actions.run(new Runnable() {
                                 @Override
                                 public void run() {
 
-
+                                    //Solo guarda la puntuacion en caso de no estar en debugmode
                                     if (!debugmode) {
                                         game.bdr.saveCurrentGame(puntuacion);
                                     }
@@ -308,8 +300,6 @@ public class NaveEspacio extends PantallaBase {
 
                                     gameOver();
                                     controlBender.benders.clear();
-                                  //  controlBender.benders = new ArrayList<ActorBender>();
-
 
                                     explosions= new ArrayList<Explosion>();
                                     explosionesExplotadas.clear();
@@ -327,6 +317,7 @@ public class NaveEspacio extends PantallaBase {
         }
         controlBender.benders.removeAll(bendersMuertos);
 
+        //Condicion de creacion de mas benders, en modo normal a los 1000 dejan de salir y en modo loco son infinitos
         if (game.myGameCallback.getCrazyMode()) {
             if (ControladorBenderes.benders.size() <= 10) {
                 crearBenders(numeroBenders);
@@ -346,6 +337,12 @@ public class NaveEspacio extends PantallaBase {
     }
 
 
+    /**
+     * Crea una cantidad de benders pasados por el constructor
+     * los añade a la escena y los añade a la lista del controlador
+     *
+     * @param cantidad numero de benders a crear
+     */
     private void crearBenders(int cantidad){
         randomGenerator = new Random();
 
@@ -361,11 +358,20 @@ public class NaveEspacio extends PantallaBase {
 
     }
 
+    /**
+     * Controla si hay colisiones entre benders y escudos
+     * @param escudo escudo para comparar
+     * @param bender escudo para comparar
+     * @return true si hay colision, false si no la hay
+     */
     private boolean isCollision(ActorEscudo escudo, ActorBender bender) {
 
         return Intersector.overlapConvexPolygons(escudo.getLine(), bender.getPligon());
     }
 
+    /**
+     * Reinicia los valores del juego para volver a jugar
+     */
     public void GameInit(){
         contadorBenders=0;
         vida=VIDA_INICIAL;
@@ -375,6 +381,10 @@ public class NaveEspacio extends PantallaBase {
 
     }
 
+    /**
+     * Lanza el cartel de game over y da comportamientos al cartel y a la nave
+     * añade el cartel a la escena
+     */
     private void gameOver(){
 
         ActorGameOver gameOver = new ActorGameOver(nave);

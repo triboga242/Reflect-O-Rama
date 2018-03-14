@@ -8,6 +8,12 @@ import com.badlogic.gdx.InputProcessor;
 import Actores.ActorEscudo;
 
 /**
+ * Controlador del tactil de la pantalla y teclas para el emulador
+ *MAneja el comportamiento de los escudos
+ *
+ * Divide la pantalla en 4 partes y activa o desactiva el escudo que ocupa esa parte
+ * Solo se pueden activar dos escudos a la vez
+ *
  * Created by Triboga on 1/3/18.
  */
 
@@ -15,6 +21,14 @@ public class EscuchadorPantalla extends ApplicationAdapter implements InputProce
 
     private ActorEscudo e1, e2, e3, e4;
 
+
+    /**
+     * Constructor del controlador
+     * @param e1 escudo 1
+     * @param e2 escudo 2
+     * @param e3 escudo 3
+     * @param e4 escudo 4
+     */
     public EscuchadorPantalla(ActorEscudo e1, ActorEscudo e2, ActorEscudo e3, ActorEscudo e4) {
         this.e1 = e1;
         this.e2 = e2;
@@ -122,6 +136,7 @@ public class EscuchadorPantalla extends ApplicationAdapter implements InputProce
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         return false;
     }
+
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {

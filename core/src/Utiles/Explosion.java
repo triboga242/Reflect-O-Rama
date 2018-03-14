@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
+ * Animaciones de las explosiones de los benders al colisionar con otro objeto
  * Created by Triboga on 10/3/18.
  */
 
@@ -23,6 +24,10 @@ public class Explosion extends Actor {
 
     public boolean remove = false;
 
+    /**
+     * Setea el tiempo para elegir los fragmentos de la textura
+     * @param statetime momento de la animacion
+     */
     public void setStatetime(float statetime) {
         this.statetime = statetime;
     }
@@ -40,6 +45,10 @@ public class Explosion extends Actor {
 
     }
 
+    /**
+     * Actualizar la animacion
+     * @param deltatime tiempo para seleccionar el fragmento de textura que toca
+     */
     public void update (float deltatime) {
         statetime += deltatime;
         if (anim.isAnimationFinished(statetime)){
@@ -47,7 +56,6 @@ public class Explosion extends Actor {
     }
 
     public void render (SpriteBatch batch) {
-
 
     }
 
