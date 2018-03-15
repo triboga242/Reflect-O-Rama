@@ -82,9 +82,14 @@ public class NaveEspacio extends PantallaBase {
     private MyGdxGame game;
 
 
+    /**
+     * Constructor
+     * @param g game para poder compartir recursos
+     */
     public NaveEspacio(final MyGdxGame g) {
         super(g);
 
+        //Iniciamos y asignamos
         game = g;
 
         spriteBatch=new SpriteBatch();
@@ -113,7 +118,7 @@ public class NaveEspacio extends PantallaBase {
         actorVida3 = new ActorVida(3);
 
         explosions= new ArrayList<Explosion>();
-
+        //Creamos grupo y acotres, vamos añadiendo
         actores = new Group();
         actores.addActor(nave = new ActorNave(naveTextura));
 
@@ -209,12 +214,18 @@ public class NaveEspacio extends PantallaBase {
             //A veces hay colisiona con dos escudos a la vez, podria solucionarlo poniendo un boleano que controle que solo cuente una
             //colision, pero lo dejo para que sea un tipo de "bonus".
 
+            //Si colisiona con escudo y el escudo esta activado
             if (isCollision(e1, b) && e1.isVisible()) {
+                //Añade a lista de muertos
                 bendersMuertos.add(b);
+                //Crea y añade a los actores la animacion explosion
                 Explosion explosion= new Explosion(b.getX(), b.getY());
                 actores.addActor(explosion);
+                //Añade a las explotadas
                 explosionesExplotadas.add(explosion);
+                //Suma un punto
                 puntuacion++;
+                //Limpia y quita a bender explotado
                 b.clear();
                 b.remove();
                 Gdx.app.log("Escudo1 colisiona", "BUUUUUUUUUM");
@@ -245,7 +256,6 @@ public class NaveEspacio extends PantallaBase {
                 bendersMuertos.add(b);
                 Explosion explosion= new Explosion(b.getX(), b.getY());
                 explosion.setStatetime(0);
-
                 actores.addActor(explosion);
                 explosionesExplotadas.add(explosion);
                 puntuacion++;
@@ -255,15 +265,19 @@ public class NaveEspacio extends PantallaBase {
             }
 
 
+            //Si nave colisiona con bender
             if (nave.colisiona(b)) {
+                //animacion explosion
                 final Explosion explosion= new Explosion(b.getX(), b.getY());
                 actores.addActor(explosion);
                 explosionesExplotadas.add(explosion);
                 bendersMuertos.add(b);
                 b.remove();
                 b.clear();
+                //Quita una vida
                 vida--;
 
+                //Quita los actores vida de la pantalla
                 if (actorVida3.isVisible()) {
                     actorVida3.setVisible(false);
                 } else if (actorVida2.isVisible()) {
@@ -272,13 +286,13 @@ public class NaveEspacio extends PantallaBase {
                     actorVida1.setVisible(false);
                 }
 
-
+                //si la vida llega a 0
                 if (vida == 0) {
-
                     gameOver();
-/**
- * Añade un delay para dar tiempo a las animaciones de game over
- */
+
+                    /**
+                     * Añade un delay para dar tiempo a las animaciones de game over
+                     */
                     escena.addAction(Actions.sequence(Actions.delay(2.5f),
                             Actions.run(new Runnable() {
                                 @Override
