@@ -18,6 +18,10 @@ public class ControladorBenderes {
 
     public static ArrayList<ActorBender> benders = new ArrayList<ActorBender>();
 
+    /**
+     * Aniadir benders a la lista
+     * @param bender bender a añadir
+     */
     public void aniadirBender(ActorBender bender){
         benders.add(bender);
 

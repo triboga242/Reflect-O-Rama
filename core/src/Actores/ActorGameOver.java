@@ -30,14 +30,14 @@ public class ActorGameOver extends Actor {
      */
     public ActorGameOver(ActorNave nave) {
 
-        float altoPantalla= Gdx.graphics.getHeight();
-        float anchoPantalla=Gdx.graphics.getWidth();
+        float altoPantalla = Gdx.graphics.getHeight();
+        float anchoPantalla = Gdx.graphics.getWidth();
 
         Texture cartel = new Texture("ReflectoMatic/gameover.png");
         sprite = new Sprite(cartel);
 
-        sprite.setBounds(anchoPantalla*0.6f, altoPantalla/2, anchoPantalla/8, altoPantalla/15);
-        setBounds(anchoPantalla*0.6f, altoPantalla/2, anchoPantalla/8, altoPantalla/15);
+        sprite.setBounds(anchoPantalla * 0.6f, altoPantalla / 2, anchoPantalla / 8, altoPantalla / 15);
+        setBounds(anchoPantalla * 0.6f, altoPantalla / 2, anchoPantalla / 8, altoPantalla / 15);
 
         RotateByAction rotateByAction = new RotateByAction();
         rotateByAction.setDuration(0.5f);
@@ -47,27 +47,27 @@ public class ActorGameOver extends Actor {
         scaleByAction.setAmount(2.2f);
         scaleByAction.setDuration(1);
 
-        MoveToAction moveToAction=new MoveToAction();
+        MoveToAction moveToAction = new MoveToAction();
         moveToAction.setDuration(1);
         moveToAction.setPosition(nave.getX(), nave.getY());
 
-        MoveToAction moveToActionfueraLetrero=new MoveToAction();
+        MoveToAction moveToActionfueraLetrero = new MoveToAction();
         moveToActionfueraLetrero.setDuration(1.5f);
-        moveToActionfueraLetrero.setPosition(anchoPantalla*2, altoPantalla*2);
+        moveToActionfueraLetrero.setPosition(anchoPantalla * 2, altoPantalla * 2);
 
 
         SequenceAction sequenceAction = new SequenceAction(scaleByAction, rotateByAction);
-        ParallelAction parallelAction= new ParallelAction(moveToAction, sequenceAction);
+        ParallelAction parallelAction = new ParallelAction(moveToAction, sequenceAction);
         SequenceAction sequenceActionFuera = new SequenceAction(parallelAction, moveToActionfueraLetrero);
         this.addAction(sequenceActionFuera);
 
 
     }
+
     @Override
     public void act(float deltaTime) {
 
         super.act(deltaTime);
-
 
     }
 

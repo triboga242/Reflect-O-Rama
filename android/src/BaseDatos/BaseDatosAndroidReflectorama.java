@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import Utiles.BaseDatosReflect;
 
 /**
+ * Base de datos para trabajar con ella desde libgdx
  * Created by Triboga on 5/3/18.
  */
 
@@ -17,6 +18,10 @@ public class BaseDatosAndroidReflectorama extends BaseDatosReflect {
     private BaseDatosHelper helper;
     private Context c;
 
+    /**
+     * Constructor de la clase
+     * @param context contexto
+     */
     public BaseDatosAndroidReflectorama(Context context) {
         super();
         c = context;
@@ -26,6 +31,12 @@ public class BaseDatosAndroidReflectorama extends BaseDatosReflect {
     }
 
 
+    /**
+     * Creara un score nuevo si no existe la bbdd, si existe comprobara si el score actual es mayor
+     * que el guardado, si es asi, lo borra y mete el score nuevo
+     *
+     * @param score score de la ultima partida para comparar.
+     */
     @Override
     public void saveCurrentGame(int score) {
         Cursor b = baseDatos.rawQuery("select * from '" + getScoreTablename() + "';", null);
@@ -63,6 +74,10 @@ public class BaseDatosAndroidReflectorama extends BaseDatosReflect {
     }
 
 
+    /**
+     * recuperar el score de la base de datos
+     * @return score de la bbdd
+     */
     public int getScore() {
         Cursor b = baseDatos.rawQuery("select * from '" + getScoreTablename() + "'", null);
         int puntos = 0;

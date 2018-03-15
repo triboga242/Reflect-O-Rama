@@ -11,7 +11,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class BaseDatosHelper extends SQLiteOpenHelper {
 
 
-
+    /**
+     * Constructor del Helper
+     * @param context contexto donde operara
+     */
     public BaseDatosHelper(Context context) {
         super(context,
                 BaseDatosAndroidReflectorama.getDatabaseName(),

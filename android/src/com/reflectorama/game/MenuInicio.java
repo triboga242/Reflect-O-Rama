@@ -11,6 +11,7 @@ import android.view.View;
 
 
 /**
+ * Menu de inicio del juego
  * Created by Triboga on 28/2/18.
  */
 
@@ -62,7 +63,7 @@ public  class MenuInicio extends Activity {
     /**
      * Al pulsar 5 veces en mordisquitos se activara el debug mode para la siguiente pantalla
      * empieza con los 4 escudos activos y se activan la vista de los poligonos.
-     * @param v
+     * @param v la vista
      */
     public void debugMode(View v){
        contador++;
@@ -89,12 +90,20 @@ public  class MenuInicio extends Activity {
        }
     }
 
+    /**
+     * Boton para ir a puntuaciones
+     * @param v
+     */
     public void puntuaciones(View v) {
 
         Intent i = new Intent(this, Puntuaciones.class);
         startActivity(i);
     }
 
+    /**
+     * Boton para ir a opciones
+     * @param v
+     */
     public void opciones(View v) {
 
         Intent i = new Intent(this, Opciones.class);

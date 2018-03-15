@@ -7,6 +7,8 @@ import android.os.IBinder;
 import android.util.Log;
 
 /**
+ * Clase para el control de la musica del juego en si
+ *
  * Created by Triboga on 3/3/18.
  */
 

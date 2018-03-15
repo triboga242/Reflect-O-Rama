@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 /**
+ * Opciones del juego
  * Created by Triboga on 28/2/18.
  */
 
@@ -55,7 +56,10 @@ public class Opciones extends Activity implements View.OnClickListener {
         tb.setOnClickListener(this);
     }
 
-
+    /**
+     * Setear el boton de modo
+     * @param view
+     */
     public void modo(View view) {
 
         cont2++;

@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 /**
+ * Clase para controlar el sonido de la parte de los menuses
  * Created by Triboga on 2/3/18.
  */
 
@@ -16,6 +17,9 @@ public class AudioService extends Service {
     Boolean shouldPause = false;
     MediaPlayer loop;
 
+    /**
+     * Comienzo del loop de la cancion si es null
+     */
     private void startLoop(){
         if(loop == null){
             loop = MediaPlayer.create(this, R.raw.loop);
@@ -25,9 +29,17 @@ public class AudioService extends Service {
             loop.start();
         }
     }
+
+    /**
+     * Bajar el volumen de la cancion
+     */
     private void decrease(){
         loop.setVolume(0.2f, 0.2f);
     }
+
+    /**
+     *
+     */
     private void increase(){
         loop.setVolume(1.0f, 1.0f);
     }

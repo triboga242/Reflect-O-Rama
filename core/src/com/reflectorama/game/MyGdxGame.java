@@ -23,12 +23,15 @@ public class MyGdxGame extends Game {
 	}
 
 
+	/**
+	 * Constructor de MyGame para pasar
+	 * @param myGameCallback interface de la que extiende para pasar la configuracion
+	 * @param baseDatosReflect base de datos para poder guardar la puntuacion
+	 */
 	public MyGdxGame(MyGameCallback myGameCallback, BaseDatosReflect baseDatosReflect) {
 		super();
 		this.myGameCallback = myGameCallback; // initialize in constructor
         this.bdr=baseDatosReflect;
-
 	}
-
 
 }
